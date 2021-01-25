@@ -13,64 +13,50 @@ let nightlyTasks = [
 	"Document \"strange and unusual\" occurrences"
 ]
 
+let weeklyTasks = [
+	"Test security alarm", "Test motion detectors", "Test smoke alarms"
+]
+
+let monthlyTasks = [
+	"Check inside all vacant rooms", "Walk perimeter of the property"
+]
+
 struct ContentView : View {
 	var body : some View{
-		HStack {
-			VStack {
-				VStack(alignment: .leading){
-					//MARK: Nightly Tasks
-					Group{
-						HStack {
-							Text(Image(systemName: "moon.circle"))
-								.foregroundColor(Color.orange)
-							Text("Nightly Tasks")
-								.font(.title3)
-								.foregroundColor(Color.orange)
-								.bold()
-								.textCase(.uppercase)
-						}
-						List(nightlyTasks, id: \.self, rowContent: {taskName in
-							Text(taskName)
-						})
-					}
-					//MARK: Weekly Tasks
-					Group{
-						Divider()
-						HStack {
-							Text(Image(systemName: "moon.circle"))
-								.foregroundColor(Color.orange)
-							Text("Weekly Tasks")
-								.font(.title3)
-								.foregroundColor(Color.orange)
-								.bold()
-								.textCase(.uppercase)
-						}
-						Text("Check inside all vacant rooms")
-						Text("Walk perimeter of the property")
-					}
-					//MARK: Monthly Tasks
-					Group{
-						Divider()
-						HStack{
-							Text(Image(systemName: "moon.circle"))
-								.foregroundColor(Color.orange)
-							Text("Weekly Tasks")
-								.font(.title3)
-								.foregroundColor(Color.orange)
-								.bold()
-								.textCase(.uppercase)
-						}
-						Text("Test security alarm")
-						Text("Test motion detectors")
-						Text("Test smoke alarms")
-					}
-					
-					
+		NavigationView {
+			List{
+				//MARK: Nightly Tasks
+				Section(header: taskSectionHeader(timeframe: "Nightly", imageName: "moon.circle")) {
+					ForEach(nightlyTasks, id: \.self, content: {taskName in Text(taskName)})
 				}
-				Spacer()
+				
+				//MARK: Weekly Tasks
+				Section(header: taskSectionHeader(timeframe: "Weekly", imageName: "moon.circle")) {
+					ForEach(weeklyTasks, id: \.self, content: {taskName in Text(taskName)})
+				}
+				
+				//MARK: Monthly Tasks
+				Section(header: taskSectionHeader(timeframe: "Monthly", imageName: "moon.circle")) {
+					ForEach(monthlyTasks, id: \.self, content: {taskName in Text(taskName)})
+				}
 			}
-			.padding(.leading)
-			Spacer()
+			.listStyle(GroupedListStyle())
+		}
+	}
+}
+
+struct taskSectionHeader: View {
+	let timeframe : String
+	let imageName : String
+	var body: some View {
+		HStack {
+			Image(systemName: imageName)
+				.foregroundColor(Color.orange)
+			Text(timeframe + " Tasks")
+				.font(.title3)
+				.foregroundColor(Color.orange)
+				.bold()
+				.textCase(.uppercase)
 		}
 	}
 }
@@ -82,3 +68,5 @@ struct ContentView_Previews: PreviewProvider {
 		}
 	}
 }
+
+
